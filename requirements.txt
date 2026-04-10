@@ -1,0 +1,6 @@
+numpy>=1.26
+polars>=0.20
+scikit-learn>=1.4
+xgboost>=2.0
+lightgbm>=4.0
+pyarrow>=14.0
