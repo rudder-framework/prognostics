@@ -44,7 +44,7 @@ Each dataset directory contains two parquet files:
 | FD003 | 100 | 100 | 1 | 2 |
 | FD004 | 249 | 248 | 6 | 2 |
 
-Raw data source: [NASA C-MAPSS](https://data.nasa.gov/Aerospace/CMAPSS-Jet-Engine-Simulated-Data/ff5v-kuh6)
+Raw data source: [NASA C-MAPSS](https://data.nasa.gov/dataset/cmapss-jet-engine-simulated-data)
 
 ## Method
 
