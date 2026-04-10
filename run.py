@@ -145,6 +145,19 @@ def run(dataset: str, seed: int = 42, data_dir: Path = None):
     X_train = np.where(np.isinf(X_train), np.nan, X_train)
     X_test = np.where(np.isinf(X_test), np.nan, X_test)
 
+    # Leakage audit — report max feature-target correlation
+    if task == "regression":
+        y_check = np.clip(train[target_col].to_numpy().astype(np.float64), 0, RUL_CAP)
+        imp_check = SimpleImputer(strategy="median")
+        X_check = imp_check.fit_transform(X_train)
+        corrs = np.array([abs(np.corrcoef(X_check[:, i], y_check)[0, 1])
+                          for i in range(X_check.shape[1])])
+        corrs = np.nan_to_num(corrs, nan=0.0)
+        max_corr = float(np.max(corrs))
+        max_feat = feature_cols[int(np.argmax(corrs))]
+        print(f"  Leakage check: max |corr(F, {target_col})| = {max_corr:.3f} ({max_feat})"
+              f" {'— OK' if max_corr < 0.95 else '— WARNING: possible leakage'}")
+
     imputer = SimpleImputer(strategy="median")
     X_train = imputer.fit_transform(X_train)
     X_test = imputer.transform(X_test)
