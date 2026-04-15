@@ -22,24 +22,6 @@ seeding and tight model variance. All metrics fall within healthy gap ratios
 
 ---
 
-## vs Published 2025/26 SOTA
-
-| Dataset | Ours (RMSE) | Published Best | Method | Δ RMSE |
-|---------|------------|----------------|--------|--------|
-| **FD001** | 10.31 | 12.33 | Attention-LSTM (2025) | **−16.4%** |
-| **FD002** | 12.90 | 19.29 | Uncertainty-Aware DL (2025) | **−33.1%** |
-| **FD003** | 10.69 | 11.76 | Attention-LSTM (2025) | **−9.1%** |
-| **FD004** | 11.83 | 19.98 | Uncertainty-Aware DL (2025) | **−40.8%** |
-
-**All 30 of 30 seeds beat published SOTA on RMSE for every dataset.**
-
-The largest improvements are on the multi-operating-condition datasets
-(FD002, FD004) where physics-based operating condition correction enables
-the model to see degradation signal that statistical regime normalization
-methods obscure.
-
----
-
 ## Error Tail Analysis (seed 0)
 
 ### Prediction Class Distribution
