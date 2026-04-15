@@ -1,81 +1,41 @@
-# PolyForm Strict License 1.0.0
+# License
 
-<https://polyformproject.org/licenses/strict/1.0.0>
+**Copyright (c) 2026 Jason Rudder. All rights reserved.**
 
-## Acceptance
+This work is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International License** (CC BY-NC 4.0).
 
-In order to get any license under these terms, you must agree
-to them as both strict obligations and conditions to all
-your licenses.
+SPDX-License-Identifier: `CC-BY-NC-4.0`
 
-## Copyright License
+- Human-readable summary: <https://creativecommons.org/licenses/by-nc/4.0/>
+- Full legal code: <https://creativecommons.org/licenses/by-nc/4.0/legalcode>
 
-The licensor grants you a copyright license for the
-software to do everything you might do with the software
-that would otherwise infringe the licensor's copyright
-in it for any permitted purpose, other than distributing
-the software or making changes or new works based on
-the software.
+## You are free to
 
-## Patent License
+- **Share** — copy and redistribute the material in any medium or format.
+- **Adapt** — remix, transform, and build upon the material.
 
-The licensor grants you a patent license for the software
-that covers patent claims the licensor can license, or
-becomes able to license, that you would infringe by using
-the software.
+The licensor cannot revoke these freedoms as long as you follow the license terms.
 
-## No Other Rights
+## Under the following terms
 
-These terms do not allow you to sublicense or transfer any
-of your licenses to anyone else, or prevent the licensor
-from granting licenses to anyone else. These terms do not
-imply any other licenses.
+- **Attribution** — You must give appropriate credit to Jason Rudder, provide a link to this license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+- **NonCommercial** — You may not use the material for commercial purposes. Commercial use includes, but is not limited to, use by or on behalf of a for-profit entity, use in paid products or services, use in commercial research, and use in any offering for which a fee is charged.
+- **No additional restrictions** — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
 
-## Patent Defense
+For commercial licensing inquiries, contact the copyright holder.
 
-If you make any written claim that the software infringes
-or contributes to infringement of any patent, your patent
-license for the software granted under these terms ends
-immediately. If your company makes such a claim, your
-patent license ends immediately for work on behalf of
-your company.
+## Patent Pending
 
-## Violations
+The methods, feature engineering pipeline, and scoring workflow used to produce the feature matrices and results in this repository are the subject of one or more pending patent applications. Grant of this copyright license under CC BY-NC 4.0 does **not** convey any express or implied license to any patent rights held or pending by the copyright holder. All patent rights are expressly reserved.
 
-The first time you are notified in writing that you have
-violated any of these terms, or done anything with the
-software not covered by your licenses, your licenses can
-nonetheless continue if you come into full compliance
-with these terms, and take practical steps to correct past
-violations, within 32 days of receiving notice.
+Use of this repository for non-commercial reproduction and academic verification of the published results is permitted under the copyright license above. Any commercial use, including incorporation of the methods into commercial products or services, requires a separate written patent license from the copyright holder.
 
-## No Liability
+## Scope of This Repository
 
-***As far as the law allows, the software comes as is,
-without any warranty or condition, and the licensor will
-not be liable to anyone for any damages related to this
-software or this license, under any kind of legal claim.***
+The feature engineering pipeline that produced the `F001..FNNN` columns in the provided parquet files is **not** included in this repository and is not licensed under CC BY-NC 4.0. Only the feature matrices, reproduction script (`run.py`), and accompanying documentation are covered by this license.
 
-## Definitions
+Researchers can verify the reported results exactly using the provided feature matrices and `run.py` without access to the upstream pipeline.
 
-The **licensor** is the individual or entity offering
-these terms, and the **software** is the software the
-licensor makes available under these terms.
+## No Warranty
 
-**You** refers to the individual or entity agreeing to
-these terms.
-
-**Your company** is any legal entity, sole proprietorship,
-or other kind of organization that you work for, plus all
-organizations that have control over, are under the control
-of, or are under common control with that organization.
-**Control** means ownership of substantially all the assets
-of an entity, or the power to direct its management and
-policies by vote, contract, or otherwise. Control can be
-direct or indirect.
-
-**Your licenses** are all the licenses granted to you for
-the software under these terms.
-
-**Use** means anything you do with the software requiring
-one of your licenses.
+***As far as the law allows, the material in this repository is provided "as is", without warranty of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, and noninfringement. In no event shall the copyright holder be liable for any claim, damages, or other liability arising from, out of, or in connection with this repository or its use.***
