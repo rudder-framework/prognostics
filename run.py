@@ -9,10 +9,10 @@ Usage:
     python run.py --dataset fd001 --seeds 0-29
 
 Expected results (deterministic, seed-dependent):
-    FD001: RMSE 10.29, NASA 144  (seed 0)
-    FD002: RMSE 12.86, NASA 547  (seed 0)
-    FD003: RMSE 10.67, NASA 175  (seed 0)
-    FD004: RMSE 11.76, NASA 726  (seed 0)
+    FD001: RMSE 10.38, NASA 144  (seed 0)
+    FD002: RMSE 12.89, NASA 543  (seed 0)
+    FD003: RMSE 10.65, NASA 181  (seed 0)
+    FD004: RMSE 11.80, NASA 723  (seed 0)
 """
 
 import argparse
@@ -21,8 +21,16 @@ import random
 import time
 from pathlib import Path
 
-# Determinism — set BEFORE importing numpy/sklearn
+# PYTHONHASHSEED must be set in the shell before launch — os.environ
+# assignment here is a no-op (Python reads PYTHONHASHSEED at interpreter
+# startup, before this line runs). Kept for intent and to remind callers
+# to invoke as `PYTHONHASHSEED=42 python run.py ...`. Numerical determinism
+# of the stacking ensemble is enforced via n_jobs=1 and deterministic=True
+# inside get_base_models().
 os.environ["PYTHONHASHSEED"] = "42"
+
+import warnings
+warnings.filterwarnings("ignore", message="X does not have valid feature names")
 
 import numpy as np
 import polars as pl
@@ -112,6 +120,7 @@ def get_base_models(seed=42):
             num_leaves=31, min_child_samples=10, subsample=0.8,
             colsample_bytree=0.8, reg_alpha=0.1, reg_lambda=1.0,
             verbose=-1, random_state=seed,
+            n_jobs=1, deterministic=True,
         )
     if HAS_XGB:
         models["xgb"] = XGBRegressor(
@@ -119,6 +128,7 @@ def get_base_models(seed=42):
             subsample=0.8, colsample_bytree=0.8, reg_alpha=0.1,
             reg_lambda=1.0, min_child_weight=10, verbosity=0,
             random_state=seed,
+            n_jobs=1,
         )
     return models
 
@@ -150,13 +160,20 @@ def run(dataset: str, seed: int = 42, data_dir: Path = None, verbose: bool = Tru
     X_test = test.select(feature_cols).to_numpy().astype(np.float64)
     y_test = test["RUL"].to_numpy().astype(np.float64)
 
-    # Leakage audit
-    corrs = np.array([abs(np.corrcoef(X_train[:, i], y_train)[0, 1])
-                      for i in range(X_train.shape[1])])
+    # Leakage audit — skip zero-variance columns (they carry no information
+    # and would otherwise produce divide-by-zero warnings inside np.corrcoef).
+    variances = np.var(X_train, axis=0)
+    valid_cols = variances > 0
+    n_skipped = int((~valid_cols).sum())
+    corrs = np.zeros(X_train.shape[1])
+    valid_idx = np.where(valid_cols)[0]
+    for i in valid_idx:
+        corrs[i] = abs(np.corrcoef(X_train[:, i], y_train)[0, 1])
     corrs = np.nan_to_num(corrs, nan=0.0)
     max_corr = float(np.max(corrs))
     max_feat = feature_cols[int(np.argmax(corrs))]
-    print(f"  Leakage check: max |corr(F, RUL)| = {max_corr:.3f} ({max_feat}) "
+    skip_note = f" (skipped {n_skipped} constant feature{'s' if n_skipped != 1 else ''})" if n_skipped else ""
+    print(f"  Leakage check: max |corr(F, RUL)| = {max_corr:.3f} ({max_feat}){skip_note} "
           f"{'-- OK' if max_corr < 0.95 else '-- WARNING'}")
 
     # Train stacking ensemble
