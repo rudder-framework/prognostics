@@ -11,35 +11,61 @@ code — load, train, score.
 git clone https://github.com/rudder-framework/cmapss.git
 cd cmapss
 pip install -r requirements.txt
-python run.py --dataset fd001 --seed 0
+PYTHONHASHSEED=42 python run.py --dataset fd001 --seed 0
 ```
 
 ## Headline Results (30-seed validated)
 
-| Dataset | RMSE mean±std | NASA mean±std | Gap | Features | vs Published SOTA |
-|---------|--------------|--------------|-----|----------|-------------------|
-| **FD001** | **10.31 ± 0.06** | **143.7 ± 1.7** | 1.14x | 88  | **−16.4%** RMSE |
-| **FD002** | **12.90 ± 0.04** | **543.0 ± 4.1** | 0.78x | 275 | **−33.1%** RMSE |
-| **FD003** | **10.69 ± 0.05** | **184.4 ± 2.8** | 0.93x | 149 | **−9.1%**  RMSE |
-| **FD004** | **11.83 ± 0.03** | **724.5 ± 4.9** | 0.93x | 157 | **−40.8%** RMSE |
+| Dataset | RMSE mean±std | NASA mean±std | Gap | Features |
+|---------|--------------|--------------|-----|----------|
+| **FD001** | **10.31 ± 0.06** | **143.7 ± 1.7** | 1.14x | 88  |
+| **FD002** | **12.90 ± 0.04** | **543.0 ± 4.1** | 0.78x | 275 |
+| **FD003** | **10.69 ± 0.05** | **184.4 ± 2.8** | 0.93x | 149 |
+| **FD004** | **11.83 ± 0.03** | **724.5 ± 4.9** | 0.93x | 157 |
 
-All 30 of 30 seeds beat published 2025/26 SOTA RMSE for every dataset.
 See `RESULTS.md` for full statistics, error tails, and methodology.
 
 ## Reproduce a Single Result
 
 ```bash
-python run.py --dataset fd001 --seed 0
+PYTHONHASHSEED=42 python run.py --dataset fd001 --seed 0
 # → RMSE 10.38, NASA 144, gap 1.13x
 ```
+
+`PYTHONHASHSEED=42` must be set in the shell before Python starts — the
+assignment inside `run.py` is a no-op because Python reads the variable
+at interpreter startup. This, together with `n_jobs=1` and
+`deterministic=True` on the GBM base learners, pins every run of the
+same seed to bit-identical predictions.
 
 ## 30-Seed Sweep
 
 ```bash
-python run.py --dataset fd001 --seeds 0-29
+PYTHONHASHSEED=42 python run.py --dataset fd001 --seeds 0-29
 ```
 
 Reports mean ± std for RMSE, NASA, gap ratio, and aggregate error tails.
+
+## Visual Quick-Look
+
+Per-dataset Jupyter notebooks with the full 30-seed sweep and plots
+cached inline (GitHub renders them):
+
+- [notebooks/fd001_benchmark.ipynb](notebooks/fd001_benchmark.ipynb)
+- [notebooks/fd002_benchmark.ipynb](notebooks/fd002_benchmark.ipynb)
+- [notebooks/fd003_benchmark.ipynb](notebooks/fd003_benchmark.ipynb)
+- [notebooks/fd004_benchmark.ipynb](notebooks/fd004_benchmark.ipynb)
+
+Each notebook reproduces its dataset's row in the headline table and
+shows the RMSE distribution across 30 seeds, predicted-vs-actual RUL,
+residuals, and the NASA penalty per engine.
+
+| Dataset | RMSE distribution | NASA score |
+|---------|-------------------|------------|
+| FD001 | ![fd001 rmse](notebooks/fd001_results.png) | ![fd001 nasa](notebooks/fd001_nasa.png) |
+| FD002 | ![fd002 rmse](notebooks/fd002_results.png) | ![fd002 nasa](notebooks/fd002_nasa.png) |
+| FD003 | ![fd003 rmse](notebooks/fd003_results.png) | ![fd003 nasa](notebooks/fd003_nasa.png) |
+| FD004 | ![fd004 rmse](notebooks/fd004_results.png) | ![fd004 nasa](notebooks/fd004_nasa.png) |
 
 ## Datasets
 
@@ -68,8 +94,10 @@ Raw data source: [NASA C-MAPSS](https://data.nasa.gov/dataset/cmapss-jet-engine-
 - **Target:** RUL capped at 125 cycles (C-MAPSS standard)
 - **Scoring:** RMSE + NASA PHM08 asymmetric penalty
 - **No hyperparameter tuning.** Same architecture across all four datasets.
-- **Deterministic:** seed propagated to every base model. Same seed produces
-  bit-identical results.
+- **Deterministic:** `random_state=seed` on every base model, `n_jobs=1`
+  and `deterministic=True` on LightGBM/XGBoost to eliminate thread-count
+  variance. Invoke with `PYTHONHASHSEED=42` in the shell for full
+  bit-identity across runs on the same stack.
 
 For multi-operating-condition datasets (FD002, FD004), a physics-based
 operating condition correction is applied at data ingestion. The pre-computed
@@ -88,8 +116,9 @@ gap ratios 0.78–1.14x).
 
 ## License
 
-[PolyForm Strict 1.0.0](LICENSE.md) — use and reproduce, no distribution
-or modification.
+[CC BY-NC 4.0](LICENSE.md) — non-commercial use with attribution.
+**Patent Pending** — patent rights are expressly reserved; commercial use
+requires a separate written license from the copyright holder.
 
 The feature engineering pipeline that produced the F001..FNNN columns is
 not included in this repository. Researchers can verify the reported results

@@ -172,8 +172,9 @@ on the same hardware. Verified across all four datasets.
 
 ## License
 
-[PolyForm Strict 1.0.0](LICENSE.md) — use and reproduce, no distribution
-or modification.
+[CC BY-NC 4.0](LICENSE.md) — non-commercial use with attribution.
+**Patent Pending** — patent rights are expressly reserved; commercial use
+requires a separate written license from the copyright holder.
 
 The feature engineering pipeline that produced the F001..FNNN columns is
 not included in this repository. Researchers can verify the reported results
