@@ -150,7 +150,11 @@ def run(dataset: str, seed: int = 42, data_dir: Path = None, verbose: bool = Tru
     train = pl.read_parquet(data_dir / "train.parquet")
     test = pl.read_parquet(data_dir / "test.parquet")
 
-    feature_cols = [c for c in train.columns if c.startswith("F")]
+    # Generic non-grain numeric filter — supports both the public kit
+    # (F-prefixed features) and experimental variants (e.g. L-prefixed
+    # CAE latents in data/fd001_cae/).
+    grain_cols = {"cohort", "RUL", "signal_0"}
+    feature_cols = [c for c in train.columns if c not in grain_cols]
     # Preserve column order from parquet (already in correct order)
 
     X_train = train.select(feature_cols).to_numpy().astype(np.float64)
@@ -226,7 +230,8 @@ def run(dataset: str, seed: int = 42, data_dir: Path = None, verbose: bool = Tru
 def main():
     parser = argparse.ArgumentParser(description="Reproduce C-MAPSS RUL predictions")
     parser.add_argument("--dataset", required=True,
-                        choices=["fd001", "fd002", "fd003", "fd004"])
+                        choices=["fd001", "fd002", "fd003", "fd004",
+                                 "fd001_cae"])
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--seeds", type=str, default=None)
     parser.add_argument("--data-dir", type=Path, default=None)
