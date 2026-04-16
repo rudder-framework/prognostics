@@ -230,8 +230,7 @@ def run(dataset: str, seed: int = 42, data_dir: Path = None, verbose: bool = Tru
 def main():
     parser = argparse.ArgumentParser(description="Reproduce C-MAPSS RUL predictions")
     parser.add_argument("--dataset", required=True,
-                        choices=["fd001", "fd002", "fd003", "fd004",
-                                 "fd001_cae"])
+                        choices=["fd001", "fd002", "fd003", "fd004"])
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--seeds", type=str, default=None)
     parser.add_argument("--data-dir", type=Path, default=None)

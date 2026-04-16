@@ -214,21 +214,36 @@ set at this capacity.
 
 ---
 
-## Artifacts on this branch
+## Artifacts — why this report stands alone
 
-```
-cae/model.py               — SmallContractiveAutoencoder + Jacobian helper
-cae/data.py                — windowed dataset builder (HEALTH_SIGNALS, zscore)
-cae/train.py               — training driver
-cae/encode.py              — encoding driver (emits data/fd001_cae/*.parquet)
-cae/fd001_cae_weights.pt   — trained weights
-cae/fd001_cae_meta.json    — config + mu/sigma + loss log
-data/fd001_cae/train.parquet  (20,631 × 34: cohort + L01..L32 + RUL)
-data/fd001_cae/test.parquet   (100     × 34)
-experiments/fd001_cae/RESULTS.md    — this file
-run.py                     — minimal edits: generic feature filter,
-                             fd001_cae added as dataset choice
-```
+This MD is the **only** surviving artifact of the experiment in the
+canonical publication. The implementation (CAE model + training +
+encoding scripts), the trained weights, and the latent-feature
+parquets were all removed from the repo before the Zenodo cut,
+because:
+
+1. The experiment is a canonical-publication-adjacent research record,
+   not a reproducer target. The canonical FD001 result (`data/fd001/` +
+   `run.py --dataset fd001`) is untouched and reproducible independently.
+2. The negative result is fully captured above: full per-seed
+   distribution, error-tail comparison, bit-identity verification,
+   plain interpretation. A reader does not need the code to understand
+   what was tried or what happened.
+3. Anyone wanting to replicate the experiment has the full spec (Stage 1
+   hyperparameters, Stage 2 encoding rules, Stage 3 ensemble command)
+   plus the numerical targets to compare against.
+
+Removed from this tree before publication (recorded here for provenance):
+  `cae/model.py`, `cae/data.py`, `cae/train.py`, `cae/encode.py`,
+  `cae/fd001_cae_weights.pt`, `cae/fd001_cae_meta.json`,
+  `data/fd001_cae/train.parquet`, `data/fd001_cae/test.parquet`.
+
+The scrubbed implementation is recoverable from the `rudder-framework/prognostics`
+git history (commit `ed5627a`) for anyone with access; not shipped with the
+canonical Zenodo publication.
+
+`run.py` is canonical-only — the `fd001_cae` CLI choice that existed
+during the experiment was removed.
 
 No change to `data/fd001/*.parquet`, no change to canonical notebooks
 or canonical README. Main result (FD001 10.31 ± 0.06) is untouched.
