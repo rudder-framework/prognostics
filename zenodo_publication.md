@@ -5,7 +5,7 @@
 Alvin Rudder · Independent Researcher · Ørthon Research · West Lafayette, IN
 April 2026 · CC BY-NC 4.0 · Patent Pending: USPTO No. 64/027,466
 
-**DOI:** _pending — Zenodo deposit._
+**DOI:** [10.5281/zenodo.19614316](https://doi.org/10.5281/zenodo.19614316)
 
 ---
 

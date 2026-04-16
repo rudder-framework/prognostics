@@ -1,5 +1,7 @@
 # C-MAPSS
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19614316.svg)](https://doi.org/10.5281/zenodo.19614316)
+
 Reproduce C-MAPSS turbofan engine RUL prediction results.
 
 Pre-computed feature matrices with anonymized columns. No feature engineering
@@ -113,6 +115,24 @@ gap ratios 0.78–1.14x).
 
 - Python 3.10+
 - numpy, polars, scikit-learn, xgboost, lightgbm, pyarrow
+
+## Citation
+
+Rudder, A. (2026). *C-MAPSS FD001–FD004 Information-Preserving Embedding & Manifold Coherence Analysis.* Zenodo. <https://doi.org/10.5281/zenodo.19614316>
+
+BibTeX:
+
+```bibtex
+@dataset{rudder_2026_cmapss_ipe_mca,
+  author       = {Rudder, A.},
+  title        = {C-MAPSS FD001–FD004 Information-Preserving Embedding
+                  \& Manifold Coherence Analysis},
+  year         = 2026,
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.19614316},
+  url          = {https://doi.org/10.5281/zenodo.19614316}
+}
+```
 
 ## License
 
