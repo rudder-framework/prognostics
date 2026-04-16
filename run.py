@@ -30,10 +30,12 @@ _SHELL_PYTHONHASHSEED_SET = os.environ.get("PYTHONHASHSEED") is not None
 # PYTHONHASHSEED must be set in the shell before launch — os.environ
 # assignment here is a no-op (Python reads PYTHONHASHSEED at interpreter
 # startup, before this line runs). Kept for intent and to remind callers
-# to invoke as `PYTHONHASHSEED=42 python run.py ...`. Numerical determinism
-# of the stacking ensemble is enforced via n_jobs=1 and deterministic=True
-# inside get_base_models().
-os.environ["PYTHONHASHSEED"] = "42"
+# to invoke as `PYTHONHASHSEED=0 python run.py ...`. PYTHONHASHSEED=0
+# disables Python's hash randomization entirely, giving consistent
+# dict/set iteration order across runs. Numerical determinism of the
+# stacking ensemble is enforced separately via n_jobs=1 and
+# deterministic=True inside get_base_models().
+os.environ["PYTHONHASHSEED"] = "0"
 
 import warnings
 warnings.filterwarnings("ignore", message="X does not have valid feature names")
@@ -242,7 +244,7 @@ def main():
         print("WARNING: PYTHONHASHSEED is not set. Results may not be "
               "100% reproducible.\n"
               "         For bit-identity, invoke as:\n"
-              "           PYTHONHASHSEED=42 python run.py --dataset ...")
+              "           PYTHONHASHSEED=0 python run.py --dataset ...")
 
     parser = argparse.ArgumentParser(description="Reproduce C-MAPSS RUL predictions")
     parser.add_argument("--dataset", required=True,

@@ -142,7 +142,7 @@ Each run prints:
 The same seed produces bit-identical results. Verified across multiple runs on the same hardware. Verified across all four datasets.
 
 `run.py` sets:
-- `os.environ["PYTHONHASHSEED"] = "42"` (set before imports)
+- `os.environ["PYTHONHASHSEED"] = "0"` (set before imports)
 - `random.seed(seed)`
 - `np.random.seed(seed)`
 - `random_state=seed` on every base model (HistGradientBoosting, LightGBM, XGBoost)
