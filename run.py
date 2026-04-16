@@ -5,7 +5,7 @@ Features are post-imputation, post-scaling. No assembly. No imputation.
 No scaling. Just load, train, predict.
 
 Usage:
-    python run.py --dataset fd001 --seed 42
+    python run.py --dataset fd001 --seed 0
     python run.py --dataset fd001 --seeds 0-29
 
 Expected results (deterministic, seed-dependent):
@@ -107,7 +107,7 @@ def print_error_tails(y_true, y_pred, dataset):
     print(f"    >20 late:  {et['gt20_late']}  >40 late: {et['gt40_late']}")
 
 
-def get_base_models(seed=42):
+def get_base_models(seed=0):
     models = {
         "hist": HistGradientBoostingRegressor(
             max_iter=500, max_depth=6, learning_rate=0.05,
@@ -133,7 +133,7 @@ def get_base_models(seed=42):
     return models
 
 
-def run(dataset: str, seed: int = 42, data_dir: Path = None, verbose: bool = True):
+def run(dataset: str, seed: int = 0, data_dir: Path = None, verbose: bool = True):
     if data_dir is None:
         data_dir = Path(__file__).parent / "data" / dataset
 
@@ -150,10 +150,8 @@ def run(dataset: str, seed: int = 42, data_dir: Path = None, verbose: bool = Tru
     train = pl.read_parquet(data_dir / "train.parquet")
     test = pl.read_parquet(data_dir / "test.parquet")
 
-    # Generic non-grain numeric filter — supports both the public kit
-    # (F-prefixed features) and experimental variants (e.g. L-prefixed
-    # CAE latents in data/fd001_cae/).
-    grain_cols = {"cohort", "RUL", "signal_0"}
+    # Feature columns are all non-grain numeric columns in the parquet.
+    grain_cols = {"cohort", "RUL"}
     feature_cols = [c for c in train.columns if c not in grain_cols]
     # Preserve column order from parquet (already in correct order)
 
@@ -231,7 +229,7 @@ def main():
     parser = argparse.ArgumentParser(description="Reproduce C-MAPSS RUL predictions")
     parser.add_argument("--dataset", required=True,
                         choices=["fd001", "fd002", "fd003", "fd004"])
-    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--seeds", type=str, default=None)
     parser.add_argument("--data-dir", type=Path, default=None)
     args = parser.parse_args()
