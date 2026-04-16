@@ -49,16 +49,12 @@ Reports mean ± std for RMSE, NASA, gap ratio, and aggregate error tails.
 ## Visual Quick-Look
 
 Per-dataset Jupyter notebooks with the full 30-seed sweep and plots
-cached inline (GitHub renders them). Each notebook can also be opened
-directly in Google Colab — the first code cell auto-installs `polars`
-and clones the repo so the data files are available.
+cached inline (GitHub renders them):
 
-| Notebook | Open in Colab |
-|---|---|
-| [notebooks/fd001.ipynb](notebooks/fd001.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/orthon-io/cmapss/blob/main/notebooks/fd001.ipynb) |
-| [notebooks/fd002.ipynb](notebooks/fd002.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/orthon-io/cmapss/blob/main/notebooks/fd002.ipynb) |
-| [notebooks/fd003.ipynb](notebooks/fd003.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/orthon-io/cmapss/blob/main/notebooks/fd003.ipynb) |
-| [notebooks/fd004.ipynb](notebooks/fd004.ipynb) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/orthon-io/cmapss/blob/main/notebooks/fd004.ipynb) |
+- [notebooks/fd001.ipynb](notebooks/fd001.ipynb)
+- [notebooks/fd002.ipynb](notebooks/fd002.ipynb)
+- [notebooks/fd003.ipynb](notebooks/fd003.ipynb)
+- [notebooks/fd004.ipynb](notebooks/fd004.ipynb)
 
 Each notebook reproduces its dataset's row in the headline table and
 shows the RMSE distribution across 30 seeds, predicted-vs-actual RUL,
