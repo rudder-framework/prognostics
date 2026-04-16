@@ -8,7 +8,7 @@ code — load, train, score.
 ## Quick Start
 
 ```bash
-git clone https://github.com/rudder-framework/cmapss.git
+git clone https://github.com/orthon-io/cmapss.git
 cd cmapss
 pip install -r requirements.txt
 PYTHONHASHSEED=42 python run.py --dataset fd001 --seed 0
