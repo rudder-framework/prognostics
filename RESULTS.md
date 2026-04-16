@@ -16,9 +16,7 @@
 | **FD003** | **10.69 ± 0.05** | **184.4 ± 2.8** | 0.93x | [10.54, 10.79] | [177, 188] |
 | **FD004** | **11.83 ± 0.03** | **724.5 ± 4.9** | 0.93x | [11.78, 11.89] | [712, 733] |
 
-Standard deviations of ±0.03–0.06 RMSE across 30 seeds reflect deterministic
-seeding and tight model variance. All metrics fall within healthy gap ratios
-(0.78–1.14x).
+Standard deviations of ±0.03–0.06 RMSE across 30 seeds reflect deterministic seeding and tight model variance. All metrics fall within healthy gap ratios (0.78–1.14x).
 
 ---
 
@@ -26,8 +24,7 @@ seeding and tight model variance. All metrics fall within healthy gap ratios
 
 ### Prediction Class Distribution
 
-Classification: GOOD = |error| ≤ 10 cycles, EARLY = 10–20 cycles early,
-VERY_EARLY = >20 early, LATE = 10–20 late, VERY_LATE = >20 late.
+Classification: GOOD = |error| ≤ 10 cycles, EARLY = 10–20 cycles early, VERY_EARLY = >20 early, LATE = 10–20 late, VERY_LATE = >20 late.
 
 | Dataset | GOOD | EARLY | VERY_EARLY | LATE | VERY_LATE | Total Engines |
 |---------|------|-------|------------|------|-----------|---------------|
@@ -56,11 +53,7 @@ VERY_EARLY = >20 early, LATE = 10–20 late, VERY_LATE = >20 late.
 
 **Across 90 seed runs on FD001/FD002/FD003: zero catastrophic failures.**
 
-FD004 has one persistent catastrophic prediction across all 30 seeds:
-engine_166 (true RUL 72, predicted ~123). This is a 2-fault-mode outlier
-that appears identically in every configuration tested. It is the only
-engine in the C-MAPSS test set that consistently triggers the asymmetric
-NASA penalty across this method.
+FD004 has one persistent catastrophic prediction across all 30 seeds: engine_166 (true RUL 72, predicted ~123). This is a 2-fault-mode outlier that appears identically in every configuration tested. It is the only engine in the C-MAPSS test set that consistently triggers the asymmetric NASA penalty across this method.
 
 ---
 
@@ -85,11 +78,8 @@ The leakage check is run automatically by `run.py` and printed before training.
 
 ### Data
 - **Source:** [NASA C-MAPSS](https://data.nasa.gov/dataset/cmapss-jet-engine-simulated-data)
-- **Pre-computed feature matrices** are provided in `data/{fd001..fd004}/`
-  as anonymized parquet files with columns F001..FNNN.
-- **Train and test parquets** are post-imputation, post-scaling. The
-  researcher loads them directly — no feature engineering, no imputation,
-  no scaling required.
+- **Pre-computed feature matrices** are provided in `data/{fd001..fd004}/` as anonymized parquet files with columns F001..FNNN.
+- **Train and test parquets** are post-imputation, post-scaling. The researcher loads them directly — no feature engineering, no imputation, no scaling required.
 
 ### Model
 Stacking ensemble with fixed hyperparameters:
@@ -101,20 +91,16 @@ Stacking ensemble with fixed hyperparameters:
 | HistGradientBoosting | max_iter=500, max_depth=6, lr=0.05 |
 | Meta-learner | RidgeCV(alphas=[0.01, 0.1, 1.0, 10.0, 100.0]) |
 
-All base models receive `random_state=seed`. The same seed produces
-bit-identical results on the same hardware.
+All base models receive `random_state=seed`. The same seed produces bit-identical results on the same hardware.
 
 ### Validation
-- **5-fold GroupKFold** on engine ID — no engine appears in both train
-  and validation within any fold.
+- **5-fold GroupKFold** on engine ID — no engine appears in both train and validation within any fold.
 - **RUL capped at 125** cycles (C-MAPSS standard).
-- **No hyperparameter tuning.** The same architecture is used across
-  all four datasets.
+- **No hyperparameter tuning.** The same architecture is used across all four datasets.
 
 ### Scoring
 - **RMSE:** Root mean squared error on test set predictions (last cycle per engine)
-- **NASA PHM08:** Asymmetric penalty score; late predictions penalized
-  exponentially more than early predictions.
+- **NASA PHM08:** Asymmetric penalty score; late predictions penalized exponentially more than early predictions.
 - **Gap Ratio:** OOF_RMSE / Test_RMSE. Healthy range: 0.8–1.2.
 
 ---
