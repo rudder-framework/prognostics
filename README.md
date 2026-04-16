@@ -11,7 +11,7 @@ code — load, train, score.
 git clone https://github.com/orthon-io/cmapss.git
 cd cmapss
 pip install -r requirements.txt
-PYTHONHASHSEED=42 python run.py --dataset fd001 --seed 0
+PYTHONHASHSEED=0 python run.py --dataset fd001 --seed 0
 ```
 
 ## Headline Results (30-seed validated)
@@ -28,11 +28,11 @@ See `RESULTS.md` for full statistics, error tails, and methodology.
 ## Reproduce a Single Result
 
 ```bash
-PYTHONHASHSEED=42 python run.py --dataset fd001 --seed 0
+PYTHONHASHSEED=0 python run.py --dataset fd001 --seed 0
 # → RMSE 10.38, NASA 144, gap 1.13x
 ```
 
-`PYTHONHASHSEED=42` must be set in the shell before Python starts — the
+`PYTHONHASHSEED=0` must be set in the shell before Python starts — the
 assignment inside `run.py` is a no-op because Python reads the variable
 at interpreter startup. This, together with `n_jobs=1` and
 `deterministic=True` on the GBM base learners, pins every run of the
@@ -41,7 +41,7 @@ same seed to bit-identical predictions.
 ## 30-Seed Sweep
 
 ```bash
-PYTHONHASHSEED=42 python run.py --dataset fd001 --seeds 0-29
+PYTHONHASHSEED=0 python run.py --dataset fd001 --seeds 0-29
 ```
 
 Reports mean ± std for RMSE, NASA, gap ratio, and aggregate error tails.
@@ -96,7 +96,7 @@ Raw data source: [NASA C-MAPSS](https://data.nasa.gov/dataset/cmapss-jet-engine-
 - **No hyperparameter tuning.** Same architecture across all four datasets.
 - **Deterministic:** `random_state=seed` on every base model, `n_jobs=1`
   and `deterministic=True` on LightGBM/XGBoost to eliminate thread-count
-  variance. Invoke with `PYTHONHASHSEED=42` in the shell for full
+  variance. Invoke with `PYTHONHASHSEED=0` in the shell for full
   bit-identity across runs on the same stack.
 
 For multi-operating-condition datasets (FD002, FD004), a physics-based

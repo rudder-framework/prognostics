@@ -160,7 +160,7 @@ Dependent on system compute architecture and dependencies, the same seed produce
 
 `run.py` sets determinism at every level before any computation begins:
 
-- `PYTHONHASHSEED=42` — set in the **shell environment before
+- `PYTHONHASHSEED=0` — set in the **shell environment before
   interpreter launch**.
 - `random.seed(seed)`
 - `np.random.seed(seed)`
@@ -182,15 +182,15 @@ lightgbm 4.x, pyarrow 23.x.
 git clone https://github.com/orthon-io/cmapss.git
 cd cmapss
 pip install -r requirements.txt
-PYTHONHASHSEED=42 python run.py --dataset fd001 --seed 0
-PYTHONHASHSEED=42 python run.py --dataset fd001 --seeds 0-29
+PYTHONHASHSEED=0 python run.py --dataset fd001 --seed 0
+PYTHONHASHSEED=0 python run.py --dataset fd001 --seeds 0-29
 ```
 
 ---
 
 ## Future Research
 
-The Ørthon framework is actively under development across multiple domains including aerospace, chemical processes, and rotating equipment. The current release covers C-MAPSS benchmark results only. Researchers interested in working on future projects are invited to reach out: <orthon@orthon.io> · Ørthon Research.
+Active validation of the Ørthon framework is underway across multiple domains including aerospace, chemical processes, and rotating equipment. The current release covers C-MAPSS benchmark results only. Researchers interested in working on future projects are invited to reach out: <orthon@orthon.io> · Ørthon Research.
 
 ---
 
