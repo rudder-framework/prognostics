@@ -21,6 +21,12 @@ import random
 import time
 from pathlib import Path
 
+# Capture the shell-level PYTHONHASHSEED state BEFORE we overwrite it
+# below, so main() can warn the user if they forgot to set it. The
+# sys.flags path doesn't work here — it only distinguishes
+# PYTHONHASHSEED=0 from "anything else", not "unset" from "deterministic".
+_SHELL_PYTHONHASHSEED_SET = os.environ.get("PYTHONHASHSEED") is not None
+
 # PYTHONHASHSEED must be set in the shell before launch — os.environ
 # assignment here is a no-op (Python reads PYTHONHASHSEED at interpreter
 # startup, before this line runs). Kept for intent and to remind callers
@@ -226,6 +232,18 @@ def run(dataset: str, seed: int = 0, data_dir: Path = None, verbose: bool = True
 
 
 def main():
+    # Warn if PYTHONHASHSEED wasn't set in the shell before launch.
+    # The module-level os.environ assignment up top is a no-op for
+    # Python's hash randomization (already seeded at interpreter
+    # startup), but it poisons any os.environ.get() check here — so
+    # we consult _SHELL_PYTHONHASHSEED_SET, captured before the
+    # assignment.
+    if not _SHELL_PYTHONHASHSEED_SET:
+        print("WARNING: PYTHONHASHSEED is not set. Results may not be "
+              "100% reproducible.\n"
+              "         For bit-identity, invoke as:\n"
+              "           PYTHONHASHSEED=42 python run.py --dataset ...")
+
     parser = argparse.ArgumentParser(description="Reproduce C-MAPSS RUL predictions")
     parser.add_argument("--dataset", required=True,
                         choices=["fd001", "fd002", "fd003", "fd004"])
