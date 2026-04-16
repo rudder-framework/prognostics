@@ -121,17 +121,11 @@ bit-identical results on the same hardware.
 
 ## Operating Condition Correction
 
-Multi-operating-condition datasets (FD002, FD004) use a physics-based
-operating condition correction at data ingestion. The correction normalizes
-sensor measurements to equivalent reference conditions before any ML
-processing, removing operating-condition-induced variance while preserving
-degradation signal.
+Multi-operating-condition datasets (FD002, FD004) use a physics-based operating condition correction at data ingestion. The correction normalizes sensor measurements to equivalent reference conditions before any ML processing, removing operating-condition-induced variance while preserving degradation signal.
 
 Single-operating-condition datasets (FD001, FD003) require no normalization.
 
-The pre-computed feature matrices in this repository contain features
-extracted from the corrected data for FD002 and FD004 and from the
-original data for FD001 and FD003.
+The pre-computed feature matrices in this repository contain features extracted from the corrected data for FD002 and FD004 and from the original data for FD001 and FD003.
 
 ---
 
@@ -159,8 +153,7 @@ Each run prints:
 
 ## Determinism
 
-The same seed produces bit-identical results. Verified across multiple runs
-on the same hardware. Verified across all four datasets.
+The same seed produces bit-identical results. Verified across multiple runs on the same hardware. Verified across all four datasets.
 
 `run.py` sets:
 - `os.environ["PYTHONHASHSEED"] = "42"` (set before imports)
@@ -173,9 +166,6 @@ on the same hardware. Verified across all four datasets.
 ## License
 
 [CC BY-NC 4.0](LICENSE.md) — non-commercial use with attribution.
-**Patent Pending** — patent rights are expressly reserved; commercial use
-requires a separate written license from the copyright holder.
+**Patent Pending** — patent rights are expressly reserved; commercial use requires a separate written license from the copyright holder.
 
-The feature engineering pipeline that produced the F001..FNNN columns is
-not included in this repository. Researchers can verify the reported results
-exactly using the provided feature matrices and `run.py`.
+The feature engineering pipeline that produced the F001..FNNN columns is not included in this repository. Researchers can verify the reported results exactly using the provided feature matrices and `run.py`.
